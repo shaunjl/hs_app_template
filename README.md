@@ -1,4 +1,4 @@
-hs_app_template
+timeSeriesApp
 ===============
 
-Hydroshare app template for Django
+Hydroshare time series app for Django
