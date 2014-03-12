@@ -5,9 +5,15 @@ from mezzanine.pages.models import Page, RichText
 from mezzanine.core.models import Ownable
 from hs_core.models import AbstractResource
 
-#
-# To create a new resource, use these three super-classes. 
-#
+class tSRType(Page, RichText,AbstractResource): #tSRType = time series resource type 
+        resource_description = models.TextField(null=False, blank=True, default='',
+                help_text='I.E. Time Series',
+        )
 
-# class MyResource(Page, RichText, AbstractResource)
+#class tS(Page, RichText, AbstractResource):  #tS = time series (object)
+#	tsrtype = models.ForeignKey('tSRType')
+#	resource_title = models.TextField('Time Series Title',max_length=60, help_text='Provide a searchable name for your Time Series')
+#	resource_content = models.TextField(max_length = 200)
+
+
 

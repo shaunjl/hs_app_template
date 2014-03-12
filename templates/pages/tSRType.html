@@ -5,16 +5,16 @@
     {% set_page_permissions page %}
 
 <div class='row'>
-    {% editable page.genericresource.content %}
-       {{ page.genericresource.content|safe|richtext_filters }}
+    {% editable page.tSRType.content %}
+       {{ page.tSRType.content|safe|richtext_filters }}
     {% endeditable %}
 </div>
 
 <h4>Download files</h4>
 <div class='row'>
-{% if page.genericresource.resource_file %}
+{% if page.tSRType.resource_file %}
     <a class='btn btn-lg btn-primary' href='{{page.genericresource.resource_file.url}}'>{{ page.genericresource.resource_file.name }}</a>
-{% elif page.genericresource.resource_url %}
+{% elif page.tSRType.resource_url %}
     <a class='btn btn-lg btn-primary' href='{{page.genericresource.resource_url}}'>Resource URL links to off-site</a>
 {% endif %}
 </div>
@@ -22,32 +22,32 @@
 <hr/>
 <div class='row'>
     <ul class='list-group'>
-        {% editable page.genericresource.discoverable %}
-        <li class='list-group-item'><b>Creator:</b> {{ page.genericresource.creator }}</li>
+        {% editable page.tSRType.discoverable %}
+        <li class='list-group-item'><b>Creator:</b> {{ page.tSRType.creator }}</li>
         {% endeditable %}
         <li class='list-group-item'><b>Created on</b> {{ page.created|date:"SHORT_DATETIME_FORMAT" }}</li>
-        <li class='list-group-item'><b>Last modified by:</b> {{ page.genericresource.last_changed_by.username }}</li>
+        <li class='list-group-item'><b>Last modified by:</b> {{ page.tSRType.last_changed_by.username }}</li>
         <li class='list-group-item'><b>Modified on</b> {{ page.updated|date:"SHORT_DATETIME_FORMAT" }}</li>
-        {% editable page.genericresource.public %}
-        <li class='list-group-item'><b>Publicly viewable:</b> {{ page.genericresource.public|yesno }}</li>
+        {% editable page.tSRType.public %}
+        <li class='list-group-item'><b>Publicly viewable:</b> {{ page.tSRType.public|yesno }}</li>
         {% endeditable %}
-        {% editable page.genericresource.frozen %}
-        <li class='list-group-item'><b>Published:</b> {{ page.genericresource.published_and_frozen|yesno }}</li>
+        {% editable page.tSRType.frozen %}
+        <li class='list-group-item'><b>Published:</b> {{ page.tSRType.published_and_frozen|yesno }}</li>
         {% endeditable %}
-        {% editable page.genericresource.do_not_distribute %}
-        <li class='list-group-item'><b>Do Not Distribute:</b> {{ page.genericresource.do_not_distribute|yesno }}</li>
+        {% editable page.tSRType.do_not_distribute %}
+        <li class='list-group-item'><b>Do Not Distribute:</b> {{ page.tSRType.do_not_distribute|yesno }}</li>
         {% endeditable %}
-        {% editable page.genericresource.discoverable %}
-        <li class='list-group-item'><b>Discoverable:</b> {{ page.genericresource.discoverable|yesno }}</li>
+        {% editable page.tSRType.discoverable %}
+        <li class='list-group-item'><b>Discoverable:</b> {{ page.tSRType.discoverable|yesno }}</li>
         {% endeditable %}
     </ul> 
     <h5>Owners</h5>
     <div class='list-group'>
-        {% editable page.genericresource.owners %} 
-        {% for owner in page.genericresource.owners.all %}
-        <a class='list-group-item' href='mailto:{{ page.genericresource.owner.email }}'>
+        {% editable page.tSRType.owners %} 
+        {% for owner in page.tSRType.owners.all %}
+        <a class='list-group-item' href='mailto:{{ page.tSRType.owner.email }}'>
              {% if owner.first_name %}
-                {{ owner.first_name }} {{ page.genericresource.owner.last_name }}
+                {{ owner.first_name }} {{ page.tSRType.owner.last_name }}
              {% else %}
                 {{ owner.username }}
              {% endif %}
@@ -59,7 +59,7 @@
 
 <h4>Dublin Core Metadata</h4>
 <table class="table table-striped">
-{% for m in page.genericresource.dublin_metadata.all %}
+{% for m in page.tSRType.dublin_metadata.all %}
 <tr> 
 <td>{{m.term_name}}</td>
 <td>{{m.qualifier}}</td>

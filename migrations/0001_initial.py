@@ -8,39 +8,73 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding model 'GenericResource'
-        db.create_table(u'hs_core_genericresource', (
+        # Adding model 'tSRType'
+        db.create_table(u'timeSeriesApp_tsrtype', (
             (u'page_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['pages.Page'], unique=True, primary_key=True)),
+            (u'comments_count', self.gf('django.db.models.fields.IntegerField')(default=0)),
             ('content', self.gf('mezzanine.core.fields.RichTextField')()),
-            ('user', self.gf('django.db.models.fields.related.ForeignKey')(related_name=u'genericresources', to=orm['auth.User'])),
-            ('creator', self.gf('django.db.models.fields.related.ForeignKey')(related_name='creator_of', to=orm['auth.User'])),
+            ('user', self.gf('django.db.models.fields.related.ForeignKey')(related_name=u'tsrtypes', to=orm['auth.User'])),
+            ('creator', self.gf('django.db.models.fields.related.ForeignKey')(related_name=u'creator_of_timeseriesapp_tsrtype', to=orm['auth.User'])),
             ('public', self.gf('django.db.models.fields.BooleanField')(default=True)),
             ('frozen', self.gf('django.db.models.fields.BooleanField')(default=False)),
             ('do_not_distribute', self.gf('django.db.models.fields.BooleanField')(default=True)),
             ('discoverable', self.gf('django.db.models.fields.BooleanField')(default=True)),
             ('published_and_frozen', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('last_changed_by', self.gf('django.db.models.fields.related.ForeignKey')(related_name='last_changed', null=True, to=orm['auth.User'])),
-            ('resource_file', self.gf('django.db.models.fields.files.FileField')(max_length=100, null=True, blank=True)),
-            ('resource_url', self.gf('django.db.models.fields.URLField')(max_length=200, null=True, blank=True)),
+            ('last_changed_by', self.gf('django.db.models.fields.related.ForeignKey')(related_name=u'last_changed_timeseriesapp_tsrtype', null=True, to=orm['auth.User'])),
+            ('resource_description', self.gf('django.db.models.fields.TextField')(default='', blank=True)),
         ))
-        db.send_create_signal(u'hs_core', ['GenericResource'])
+        db.send_create_signal(u'timeSeriesApp', ['tSRType'])
 
-        # Adding M2M table for field owners on 'GenericResource'
-        m2m_table_name = db.shorten_name(u'hs_core_genericresource_owners')
+        # Adding M2M table for field owners on 'tSRType'
+        m2m_table_name = db.shorten_name(u'timeSeriesApp_tsrtype_owners')
         db.create_table(m2m_table_name, (
             ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('genericresource', models.ForeignKey(orm[u'hs_core.genericresource'], null=False)),
+            ('tsrtype', models.ForeignKey(orm[u'timeSeriesApp.tsrtype'], null=False)),
             ('user', models.ForeignKey(orm[u'auth.user'], null=False))
         ))
-        db.create_unique(m2m_table_name, ['genericresource_id', 'user_id'])
+        db.create_unique(m2m_table_name, ['tsrtype_id', 'user_id'])
+
+        # Adding model 'tS'
+        db.create_table(u'timeSeriesApp_ts', (
+            (u'page_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['pages.Page'], unique=True, primary_key=True)),
+            (u'comments_count', self.gf('django.db.models.fields.IntegerField')(default=0)),
+            ('content', self.gf('mezzanine.core.fields.RichTextField')()),
+            ('user', self.gf('django.db.models.fields.related.ForeignKey')(related_name=u'tss', to=orm['auth.User'])),
+            ('creator', self.gf('django.db.models.fields.related.ForeignKey')(related_name=u'creator_of_timeseriesapp_ts', to=orm['auth.User'])),
+            ('public', self.gf('django.db.models.fields.BooleanField')(default=True)),
+            ('frozen', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('do_not_distribute', self.gf('django.db.models.fields.BooleanField')(default=True)),
+            ('discoverable', self.gf('django.db.models.fields.BooleanField')(default=True)),
+            ('published_and_frozen', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('last_changed_by', self.gf('django.db.models.fields.related.ForeignKey')(related_name=u'last_changed_timeseriesapp_ts', null=True, to=orm['auth.User'])),
+            ('tsrtype', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['timeSeriesApp.tSRType'])),
+            ('tS_title', self.gf('django.db.models.fields.TextField')(max_length=60)),
+            ('resource_content', self.gf('django.db.models.fields.TextField')(max_length=200)),
+        ))
+        db.send_create_signal(u'timeSeriesApp', ['tS'])
+
+        # Adding M2M table for field owners on 'tS'
+        m2m_table_name = db.shorten_name(u'timeSeriesApp_ts_owners')
+        db.create_table(m2m_table_name, (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('ts', models.ForeignKey(orm[u'timeSeriesApp.ts'], null=False)),
+            ('user', models.ForeignKey(orm[u'auth.user'], null=False))
+        ))
+        db.create_unique(m2m_table_name, ['ts_id', 'user_id'])
 
 
     def backwards(self, orm):
-        # Deleting model 'GenericResource'
-        db.delete_table(u'hs_core_genericresource')
+        # Deleting model 'tSRType'
+        db.delete_table(u'timeSeriesApp_tsrtype')
 
-        # Removing M2M table for field owners on 'GenericResource'
-        db.delete_table(db.shorten_name(u'hs_core_genericresource_owners'))
+        # Removing M2M table for field owners on 'tSRType'
+        db.delete_table(db.shorten_name(u'timeSeriesApp_tsrtype_owners'))
+
+        # Deleting model 'tS'
+        db.delete_table(u'timeSeriesApp_ts')
+
+        # Removing M2M table for field owners on 'tS'
+        db.delete_table(db.shorten_name(u'timeSeriesApp_ts_owners'))
 
 
     models = {
@@ -80,22 +114,6 @@ class Migration(SchemaMigration):
             'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         },
-        u'hs_core.genericresource': {
-            'Meta': {'ordering': "(u'_order',)", 'object_name': 'GenericResource', '_ormbases': [u'pages.Page']},
-            'content': ('mezzanine.core.fields.RichTextField', [], {}),
-            'creator': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'creator_of'", 'to': u"orm['auth.User']"}),
-            'discoverable': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            'do_not_distribute': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            'frozen': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'last_changed_by': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'last_changed'", 'null': 'True', 'to': u"orm['auth.User']"}),
-            'owners': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'owns'", 'symmetrical': 'False', 'to': u"orm['auth.User']"}),
-            u'page_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['pages.Page']", 'unique': 'True', 'primary_key': 'True'}),
-            'public': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            'published_and_frozen': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'resource_file': ('django.db.models.fields.files.FileField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
-            'resource_url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
-            'user': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "u'genericresources'", 'to': u"orm['auth.User']"})
-        },
         u'pages.page': {
             'Meta': {'ordering': "(u'titles',)", 'object_name': 'Page'},
             '_meta_title': ('django.db.models.fields.CharField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'}),
@@ -125,7 +143,41 @@ class Migration(SchemaMigration):
             'domain': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '50'})
+        },
+        u'timeSeriesApp.ts': {
+            'Meta': {'ordering': "(u'_order',)", 'object_name': 'tS', '_ormbases': [u'pages.Page']},
+            u'comments_count': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'content': ('mezzanine.core.fields.RichTextField', [], {}),
+            'creator': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "u'creator_of_timeseriesapp_ts'", 'to': u"orm['auth.User']"}),
+            'discoverable': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            'do_not_distribute': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            'frozen': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'last_changed_by': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "u'last_changed_timeseriesapp_ts'", 'null': 'True', 'to': u"orm['auth.User']"}),
+            'owners': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "u'owns_timeseriesapp_ts'", 'symmetrical': 'False', 'to': u"orm['auth.User']"}),
+            u'page_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['pages.Page']", 'unique': 'True', 'primary_key': 'True'}),
+            'public': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            'published_and_frozen': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'resource_content': ('django.db.models.fields.TextField', [], {'max_length': '200'}),
+            'tS_title': ('django.db.models.fields.TextField', [], {'max_length': '60'}),
+            'tsrtype': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['timeSeriesApp.tSRType']"}),
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "u'tss'", 'to': u"orm['auth.User']"})
+        },
+        u'timeSeriesApp.tsrtype': {
+            'Meta': {'ordering': "(u'_order',)", 'object_name': 'tSRType', '_ormbases': [u'pages.Page']},
+            u'comments_count': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'content': ('mezzanine.core.fields.RichTextField', [], {}),
+            'creator': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "u'creator_of_timeseriesapp_tsrtype'", 'to': u"orm['auth.User']"}),
+            'discoverable': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            'do_not_distribute': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            'frozen': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'last_changed_by': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "u'last_changed_timeseriesapp_tsrtype'", 'null': 'True', 'to': u"orm['auth.User']"}),
+            'owners': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "u'owns_timeseriesapp_tsrtype'", 'symmetrical': 'False', 'to': u"orm['auth.User']"}),
+            u'page_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['pages.Page']", 'unique': 'True', 'primary_key': 'True'}),
+            'public': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            'published_and_frozen': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'resource_description': ('django.db.models.fields.TextField', [], {'default': "''", 'blank': 'True'}),
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "u'tsrtypes'", 'to': u"orm['auth.User']"})
         }
     }
 
-    complete_apps = ['hs_core']
+    complete_apps = ['timeSeriesApp']
