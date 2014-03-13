@@ -5,17 +5,17 @@
     {% set_page_permissions page %}
 
 <div class='row'>
-    {% editable page.tSRType.content %}
-       {{ page.tSRType.content|safe|richtext_filters }}
+    {% editable page.tSRType.description %}
+       {{ page.tSRType.description|safe|richtext_filters }}
     {% endeditable %}
 </div>
 
-<h4>Download files</h4>
+<h4>URL and Namespace</h4>
 <div class='row'>
-{% if page.tSRType.resource_file %}
-    <a class='btn btn-lg btn-primary' href='{{page.genericresource.resource_file.url}}'>{{ page.genericresource.resource_file.name }}</a>
+{% if page.tSRType.resource_url %}
+    <a class='btn btn-lg btn-primary' href='{{page.tSRType.resource_url}}'>Time Series Url</a>
 {% elif page.tSRType.resource_url %}
-    <a class='btn btn-lg btn-primary' href='{{page.genericresource.resource_url}}'>Resource URL links to off-site</a>
+    <a class='btn btn-lg btn-primary' href='{{page.tSRType.resource_url}}'>Time Series Namespace</a>
 {% endif %}
 </div>
 
