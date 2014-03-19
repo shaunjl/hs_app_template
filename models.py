@@ -18,10 +18,5 @@ class tSRType(Page, RichText,AbstractResource): #tSRType = time series resource 
 	class Meta:
 		verbose_name = "Time Series"
 
-#class tS(Page, RichText, AbstractResource):  #tS = time series (object)
-#	tsrtype = models.ForeignKey('tSRType')
-#	resource_title = models.TextField('Time Series Title',max_length=60, help_text='Provide a searchable name for your Time Series')
-#	resource_content = models.TextField(max_length = 200)
-
 
 
