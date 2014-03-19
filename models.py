@@ -5,7 +5,7 @@ from mezzanine.pages.models import Page, RichText
 from mezzanine.core.models import Ownable
 from hs_core.models import AbstractResource
 
-class tSRType(Page, RichText,AbstractResource): #tSRType = time series resource type 
+class timeSeries(Page, RichText,AbstractResource):
 	resource_description = models.TextField(null=False, blank=True, default='',
                 help_text='I.E. Time Series',
         )
