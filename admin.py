@@ -1,6 +1,6 @@
 from mezzanine.pages.admin import PageAdmin
 from django.contrib.gis import admin
-from .models import tSRType #, tS
+from .models import timeSeries
 
-admin.site.register(tSRType, PageAdmin)
-#admin.site.register(tS, PageAdmin)
+admin.site.register(timeSeries, PageAdmin)
+
