@@ -22,25 +22,10 @@
 <hr/>
 <div class='row'>
     <ul class='list-group'>
-        {% editable page.timeSeries.discoverable %}
-        <li class='list-group-item'><b>Creator:</b> {{ page.timeSeries.creator }}</li>
-        {% endeditable %}
         <li class='list-group-item'><b>Created on</b> {{ page.created|date:"SHORT_DATETIME_FORMAT" }}</li>
-        <li class='list-group-item'><b>Last modified by:</b> {{ page.timeSeries.last_changed_by.username }}</li>
+        <li class='list-group-item'><b>Last modified by:</b> {{ page.genericresource.last_changed_by.username }}</li>
         <li class='list-group-item'><b>Modified on</b> {{ page.updated|date:"SHORT_DATETIME_FORMAT" }}</li>
-        {% editable page.timeSeries.public %}
-        <li class='list-group-item'><b>Publicly viewable:</b> {{ page.timeSeries.public|yesno }}</li>
-        {% endeditable %}
-        {% editable page.timeSeries.frozen %}
-        <li class='list-group-item'><b>Published:</b> {{ page.timeSeries.published_and_frozen|yesno }}</li>
-        {% endeditable %}
-        {% editable page.timeSeries.do_not_distribute %}
-        <li class='list-group-item'><b>Do Not Distribute:</b> {{ page.timeSeries.do_not_distribute|yesno }}</li>
-        {% endeditable %}
-        {% editable page.timeSeries.discoverable %}
-        <li class='list-group-item'><b>Discoverable:</b> {{ page.timeSeries.discoverable|yesno }}</li>
-        {% endeditable %}
-    </ul> 
+    </ul>
     <h5>Owners</h5>
     <div class='list-group'>
         {% editable page.timeSeries.owners %} 
