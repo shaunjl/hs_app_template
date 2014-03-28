@@ -8,41 +8,15 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding model 'timeSeries'
-        db.create_table(u'timeSeriesApp_timeseries', (
-            (u'page_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['pages.Page'], unique=True, primary_key=True)),
-            (u'comments_count', self.gf('django.db.models.fields.IntegerField')(default=0)),
-            ('content', self.gf('mezzanine.core.fields.RichTextField')()),
-            ('user', self.gf('django.db.models.fields.related.ForeignKey')(related_name=u'timeseriess', to=orm['auth.User'])),
-            ('creator', self.gf('django.db.models.fields.related.ForeignKey')(related_name=u'creator_of_timeseriesapp_timeseries', to=orm['auth.User'])),
-            ('public', self.gf('django.db.models.fields.BooleanField')(default=True)),
-            ('frozen', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('do_not_distribute', self.gf('django.db.models.fields.BooleanField')(default=True)),
-            ('discoverable', self.gf('django.db.models.fields.BooleanField')(default=True)),
-            ('published_and_frozen', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('last_changed_by', self.gf('django.db.models.fields.related.ForeignKey')(related_name=u'last_changed_timeseriesapp_timeseries', null=True, to=orm['auth.User'])),
-            ('resource_description', self.gf('django.db.models.fields.TextField')(default='', blank=True)),
-            ('resource_url', self.gf('django.db.models.fields.TextField')(default='', max_length=100, blank=True)),
-            ('resource_namespace', self.gf('django.db.models.fields.TextField')(default='', max_length=100, blank=True)),
-        ))
-        db.send_create_signal(u'timeSeriesApp', ['timeSeries'])
-
-        # Adding M2M table for field owners on 'timeSeries'
-        m2m_table_name = db.shorten_name(u'timeSeriesApp_timeseries_owners')
-        db.create_table(m2m_table_name, (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('timeseries', models.ForeignKey(orm[u'timeSeriesApp.timeseries'], null=False)),
-            ('user', models.ForeignKey(orm[u'auth.user'], null=False))
-        ))
-        db.create_unique(m2m_table_name, ['timeseries_id', 'user_id'])
+        # Adding field 'TimeSeries.resource_file'
+        db.add_column(u'timeSeriesApp_timeseries', 'resource_file',
+                      self.gf('django.db.models.fields.files.FileField')(max_length=100, null=True, blank=True),
+                      keep_default=False)
 
 
     def backwards(self, orm):
-        # Deleting model 'timeSeries'
-        db.delete_table(u'timeSeriesApp_timeseries')
-
-        # Removing M2M table for field owners on 'timeSeries'
-        db.delete_table(db.shorten_name(u'timeSeriesApp_timeseries_owners'))
+        # Deleting field 'TimeSeries.resource_file'
+        db.delete_column(u'timeSeriesApp_timeseries', 'resource_file')
 
 
     models = {
@@ -113,7 +87,7 @@ class Migration(SchemaMigration):
             'name': ('django.db.models.fields.CharField', [], {'max_length': '50'})
         },
         u'timeSeriesApp.timeseries': {
-            'Meta': {'ordering': "(u'_order',)", 'object_name': 'timeSeries', '_ormbases': [u'pages.Page']},
+            'Meta': {'ordering': "(u'_order',)", 'object_name': 'TimeSeries', '_ormbases': [u'pages.Page']},
             u'comments_count': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
             'content': ('mezzanine.core.fields.RichTextField', [], {}),
             'creator': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "u'creator_of_timeseriesapp_timeseries'", 'to': u"orm['auth.User']"}),
@@ -126,6 +100,7 @@ class Migration(SchemaMigration):
             'public': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             'published_and_frozen': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'resource_description': ('django.db.models.fields.TextField', [], {'default': "''", 'blank': 'True'}),
+            'resource_file': ('django.db.models.fields.files.FileField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
             'resource_namespace': ('django.db.models.fields.TextField', [], {'default': "''", 'max_length': '100', 'blank': 'True'}),
             'resource_url': ('django.db.models.fields.TextField', [], {'default': "''", 'max_length': '100', 'blank': 'True'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "u'timeseriess'", 'to': u"orm['auth.User']"})

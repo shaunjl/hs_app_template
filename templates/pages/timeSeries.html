@@ -1,3 +1,4 @@
+
 {% extends "pages/page.html" %}
 {% load geoanalytics_tags pages_tags mezzanine_tags %}
 
@@ -5,34 +6,49 @@
     {% set_page_permissions page %}
 
 <div class='row'>
-    {% editable page.timeSeries.description %}
-       {{ page.timeSeries.description|safe|richtext_filters }}
+    {% editable page.timeSeries.content %}
+       {{ page.timeSeries.content|safe|richtext_filters }}
     {% endeditable %}
 </div>
 
-<h4>URL and Namespace</h4>
+<h4>Download files</h4>
 <div class='row'>
-{% if page.timeSeries.resource_url %}
-    <a class='btn' href='{{page.timeSeries.resource_url}}'>Time Series Url</a>
-{% elif page.timeSeries.resource_url %}
-    <a class='btn' href='{{page.timeSeries.resource_url}}'>Time Series Namespace</a>
+{% if page.timeseries.resource_file %}
+    <a class='btn btn-lg btn-primary' href='{{page.timeseries.resource_file.url}}'>{{ page.timeseries.resource_file.name }}</a>
+{% elif page.timeseries.resource_url %}
+    <a class='btn btn-lg btn-primary' href='{{page.timeseries.resource_url}}'>Resource URL links to off-site</a>
 {% endif %}
 </div>
 
 <hr/>
 <div class='row'>
     <ul class='list-group'>
+        {% editable page.timeseries.discoverable %}
+        <li class='list-group-item'><b>Creator:</b> {{ page.timeseries.creator }}</li>
+        {% endeditable %}
         <li class='list-group-item'><b>Created on</b> {{ page.created|date:"SHORT_DATETIME_FORMAT" }}</li>
-        <li class='list-group-item'><b>Last modified by:</b> {{ page.genericresource.last_changed_by.username }}</li>
+        <li class='list-group-item'><b>Last modified by:</b> {{ page.timeseries.last_changed_by.username }}</li>
         <li class='list-group-item'><b>Modified on</b> {{ page.updated|date:"SHORT_DATETIME_FORMAT" }}</li>
+        {% editable page.timeseries.public %}
+        <li class='list-group-item'><b>Publicly viewable:</b> {{ page.timeseries.public|yesno }}</li>
+        {% endeditable %}
+        {% editable page.timeseries.frozen %}
+        <li class='list-group-item'><b>Published:</b> {{ page.timeseries.published_and_frozen|yesno }}</li>
+        {% endeditable %}
+        {% editable page.timeseries.do_not_distribute %}
+        <li class='list-group-item'><b>Do Not Distribute:</b> {{ page.timeseries.do_not_distribute|yesno }}</li>
+        {% endeditable %}
+        {% editable page.timeseries.discoverable %}
+        <li class='list-group-item'><b>Discoverable:</b> {{ page.timeseries.discoverable|yesno }}</li>
+        {% endeditable %}
     </ul>
     <h5>Owners</h5>
     <div class='list-group'>
-        {% editable page.timeSeries.owners %} 
-        {% for owner in page.timeSeries.owners.all %}
-        <a class='list-group-item' href='mailto:{{ page.timeSeries.owner.email }}'>
+        {% editable page.timeseries.owners %}
+        {% for owner in page.timeseries.owners.all %}
+        <a class='list-group-item' href='mailto:{{ page.timeseries.owner.email }}'>
              {% if owner.first_name %}
-                {{ owner.first_name }} {{ page.timeSeries.owner.last_name }}
+                {{ owner.first_name }} {{ page.timeseries.owner.last_name }}
              {% else %}
                 {{ owner.username }}
              {% endif %}
@@ -44,8 +60,8 @@
 
 <h4>Dublin Core Metadata</h4>
 <table class="table table-striped">
-{% for m in page.timeSeries.dublin_metadata.all %}
-<tr> 
+{% for m in page.timeseries.dublin_metadata.all %}
+<tr>
 <td>{{m.term_name}}</td>
 <td>{{m.qualifier}}</td>
 <td>{{m.content}}</td>
@@ -56,13 +72,13 @@
 <h4>Keywords</h4>
 
 <ul class='list-group'>
-    {% editable page.keywords %} 
+    {% editable page.keywords %}
     {% for keyword in page.keywords.all %}
     <li class='list-group-item'>{{ keyword }}</li>
     {% endfor %}
     {% endeditable %}
 </ul>
-    
+
     {% include 'pages/includes/page_permissions_editor.html' %}
 
 {% endblock %}
