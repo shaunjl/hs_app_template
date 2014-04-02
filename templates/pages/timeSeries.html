@@ -1,4 +1,3 @@
-
 {% extends "pages/page.html" %}
 {% load geoanalytics_tags pages_tags mezzanine_tags %}
 
@@ -6,17 +5,30 @@
     {% set_page_permissions page %}
 
 <div class='row'>
-    {% editable page.timeSeries.content %}
-       {{ page.timeSeries.content|safe|richtext_filters }}
+    {% editable page.timeseries.description %}
+       {{ page.timeseries.description|safe|richtext_filters }}
     {% endeditable %}
 </div>
 
-<h4>Download files</h4>
 <div class='row'>
+<h4>URL and Namespace</h4>
+{% if page.timeseries.resource_url %}
+    <h5>Every hydroserver time series has a WSDL url and a namespace.</h5>
+    <h5>In your case, your url is </h5>
+    <a class='btn' href='{{page.timeseries.resource_url}}'>{{page.timeseries.resource_url}}</a>
+{% endif %}
+{% if page.timeseries.resource_namespace %}
+    <h5>And your namespace is </h5>
+    <h5>{{page.timeseries.resource_namespace}}</h5>
+{% endif %}
+</div>
+
+<div class='row'>
+<h4>Download the Time Series</h4>
 {% if page.timeseries.resource_file %}
-    <a class='btn btn-lg btn-primary' href='{{page.timeseries.resource_file.url}}'>{{ page.timeseries.resource_file.name }}</a>
-{% elif page.timeseries.resource_url %}
-    <a class='btn btn-lg btn-primary' href='{{page.timeseries.resource_url}}'>Resource URL links to off-site</a>
+    <a class='btn btn-lg btn-primary' href='{{page.timeseries.resource_file.url}}'>{{ page.timeseries.resourc$
+{% else %}
+    <h5>No file available</h5>
 {% endif %}
 </div>
 

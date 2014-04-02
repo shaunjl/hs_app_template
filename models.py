@@ -14,8 +14,9 @@ class TimeSeries(Page, RichText,AbstractResource):
     )
     resource_namespace=models.TextField(max_length=100,null=False, blank=True, default='',
         help_text='The namespace is probably {http://www.cuahsi.org/waterML/1.1/}'
-	)
+    )
 
+    resource_file=FileField(upload_to="timeseries",null=True,blank=True)
     class Meta:
         verbose_name = "Time Series"
 
