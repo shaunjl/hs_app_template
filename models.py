@@ -4,8 +4,10 @@ from django.db import models
 from mezzanine.pages.models import Page, RichText
 from mezzanine.core.models import Ownable
 from hs_core.models import AbstractResource
+from hs_core.models import resource_processor
+from mezzanine.pages.page_processors import processor_for
 
-class TimeSeries(Page, RichText,AbstractResource):
+class TimeSeries(Page, RichText, AbstractResource):
     resource_description = models.TextField(null=False, blank=True, default='',
         help_text='I.E. Upper Provo River Flow',
     )
@@ -20,5 +22,6 @@ class TimeSeries(Page, RichText,AbstractResource):
     class Meta:
         verbose_name = "Time Series"
 
+processor_for(TimeSeries)(resource_processor)
 
 
