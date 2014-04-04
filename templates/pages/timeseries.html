@@ -1,14 +1,5 @@
-{% extends "pages/page.html" %}
-{% load geoanalytics_tags pages_tags mezzanine_tags %}
-
-{% block main %}
-    {% set_page_permissions page %}
-
-<div class='row'>
-    {% editable page.timeseries.description %}
-       {{ page.timeseries.description|safe|richtext_filters }}
-    {% endeditable %}
-</div>
+{% extends "hydroshare/res.html" %}
+{% load geoanalytics_tags pages_tags mezzanine_tags keyword_tags comment_tags %}
 
 <div class='row'>
 <h4>URL and Namespace</h4>
@@ -23,74 +14,31 @@
 {% endif %}
 </div>
 
-<div class='row'>
-<h4>Download the Time Series</h4>
-{% if page.timeseries.resource_file %}
-    <a class='btn btn-lg btn-primary' href='{{page.timeseries.resource_file.url}}'>{{ page.timeseries.resourc$
-{% else %}
-    <h5>No file available</h5>
-{% endif %}
-</div>
-
-<hr/>
-<div class='row'>
-    <ul class='list-group'>
-        {% editable page.timeseries.discoverable %}
-        <li class='list-group-item'><b>Creator:</b> {{ page.timeseries.creator }}</li>
-        {% endeditable %}
-        <li class='list-group-item'><b>Created on</b> {{ page.created|date:"SHORT_DATETIME_FORMAT" }}</li>
-        <li class='list-group-item'><b>Last modified by:</b> {{ page.timeseries.last_changed_by.username }}</li>
-        <li class='list-group-item'><b>Modified on</b> {{ page.updated|date:"SHORT_DATETIME_FORMAT" }}</li>
-        {% editable page.timeseries.public %}
-        <li class='list-group-item'><b>Publicly viewable:</b> {{ page.timeseries.public|yesno }}</li>
-        {% endeditable %}
-        {% editable page.timeseries.frozen %}
-        <li class='list-group-item'><b>Published:</b> {{ page.timeseries.published_and_frozen|yesno }}</li>
-        {% endeditable %}
-        {% editable page.timeseries.do_not_distribute %}
-        <li class='list-group-item'><b>Do Not Distribute:</b> {{ page.timeseries.do_not_distribute|yesno }}</li>
-        {% endeditable %}
-        {% editable page.timeseries.discoverable %}
-        <li class='list-group-item'><b>Discoverable:</b> {{ page.timeseries.discoverable|yesno }}</li>
-        {% endeditable %}
-    </ul>
-    <h5>Owners</h5>
-    <div class='list-group'>
-        {% editable page.timeseries.owners %}
-        {% for owner in page.timeseries.owners.all %}
-        <a class='list-group-item' href='mailto:{{ page.timeseries.owner.email }}'>
-             {% if owner.first_name %}
-                {{ owner.first_name }} {{ page.timeseries.owner.last_name }}
-             {% else %}
-                {{ owner.username }}
-             {% endif %}
-	</a>
-        {% endfor %}
-        {% endeditable %}
+{% block resource %}
+<h3>Download the Time Series</h3>
+<div class="container">
+    <div class='row well'>
+        <div class="col-md-12">
+        {% if page.timeseries.resource_file %}
+            <a class='btn btn-lg btn-primary' href='{{page.timeseries.resource_file.url}}'>{{ page.timeseries.resource_file.url}}<\a>
+        {% else %}
+            <h5>No file available</h5>
+        {% endif %}
+        </div>
     </div>
 </div>
+{% endblock %}
 
-<h4>Dublin Core Metadata</h4>
-<table class="table table-striped">
-{% for m in page.timeseries.dublin_metadata.all %}
-<tr>
-<td>{{m.term_name}}</td>
-<td>{{m.qualifier}}</td>
-<td>{{m.content}}</td>
-</tr>
-{% endfor %}
-</table>
-
-<h4>Keywords</h4>
-
-<ul class='list-group'>
-    {% editable page.keywords %}
-    {% for keyword in page.keywords.all %}
-    <li class='list-group-item'>{{ keyword }}</li>
-    {% endfor %}
-    {% endeditable %}
-</ul>
-
-    {% include 'pages/includes/page_permissions_editor.html' %}
-
+{% block main_data %}
+    <form role="form-horizontal" action="">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="resource-file">Resource file</label>
+            <input type="file" name="resource_file" id="resource-file"/>
+        </div>
+        <div class="form-group">
+            <label for="resource-url">Resource URL</label>
+            <input type="url" name="resource_url" id="resource-url"/>
+        </div>
+    </form>
 {% endblock %}
