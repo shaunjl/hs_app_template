@@ -1,6 +1,7 @@
 {% extends "hydroshare/res.html" %}
 {% load geoanalytics_tags pages_tags mezzanine_tags keyword_tags comment_tags %}
 
+{% block resource %}
 <div class='row'>
 <h4>URL and Namespace</h4>
 {% if page.timeseries.resource_url %}
@@ -14,7 +15,6 @@
 {% endif %}
 </div>
 
-{% block resource %}
 <h3>Download the Time Series</h3>
 <div class="container">
     <div class='row well'>
